@@ -23,3 +23,17 @@ C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.dll
 C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\ref\osuForm.dll
 C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.pdb
 C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.genruntimeconfig.cache
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Azure.Management.Compute.Fluent.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Azure.Management.Graph.RBAC.Fluent.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Azure.Management.Msi.Fluent.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Azure.Management.Network.Fluent.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Azure.Management.ResourceManager.Fluent.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Azure.Management.Storage.Fluent.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.IdentityModel.Logging.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.IdentityModel.Tokens.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Rest.ClientRuntime.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Rest.ClientRuntime.Azure.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Rest.ClientRuntime.Azure.Authentication.dll
+C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Newtonsoft.Json.dll
+C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.Form2.resources
