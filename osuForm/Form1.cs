@@ -49,6 +49,10 @@ namespace osuForm
 
             }
         }
+        public void Greeting()
+        {
+            MessageBox.Show("Hello");
+        }
 
         public void Create()
         {
