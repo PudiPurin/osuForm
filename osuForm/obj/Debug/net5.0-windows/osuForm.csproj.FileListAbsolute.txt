@@ -37,3 +37,6 @@ C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Re
 C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Microsoft.Rest.ClientRuntime.Azure.Authentication.dll
 C:\Users\User\source\repos\osuForm\osuForm\bin\Debug\net5.0-windows\Newtonsoft.Json.dll
 C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.Form2.resources
+C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.Form3.resources
+C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.Form4.resources
+C:\Users\User\source\repos\osuForm\osuForm\obj\Debug\net5.0-windows\osuForm.Form5.resources
