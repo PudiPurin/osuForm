@@ -48,10 +48,13 @@ namespace osuForm
         public void Refresh()
         {
             con.Open();
-            String query = "  select [name] from [osuSimulation].[maps].[PlayMap]";
+            String query = "  select [name], [BPM], [SR], [UpdateDate] from [osuSimulation].[maps].[PlayMap]";
             dataGridView1.Rows.Clear();
-            dataGridView1.ColumnCount = 1;
+            dataGridView1.ColumnCount = 4;
             dataGridView1.Columns[0].Name = "Map Name";
+            dataGridView1.Columns[1].Name = "BPM";
+            dataGridView1.Columns[2].Name = "SR";
+            dataGridView1.Columns[3].Name = "Last Updated";
             SqlCommand command = new SqlCommand(query, con);
             SqlDataReader reader;
             reader = command.ExecuteReader();
@@ -59,10 +62,13 @@ namespace osuForm
             while (reader.Read())
             {
                 String name = reader["[name]"].ToString();
-
+                String BPM = reader["[BPM"].ToString();
+                String SR = reader["[SR]"].ToString();
+                String updateddate = reader["[UpdateDate]"].ToString();
+                    
                 String[] rows = new string[]
                 {
-                        name
+                        name, BPM, SR, updateddate
                 };
                 dataGridView1.Rows.Add(rows);
             }
@@ -138,7 +144,7 @@ namespace osuForm
              
 
                 Maps.Add(map2);
-
+              
                 ID.Text = map2.id.ToString();
                 MName.Text = map2.name;
                 userID.Text = map2.userID.ToString();
@@ -153,6 +159,73 @@ namespace osuForm
 
             }
             con.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
+        private void cDate_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox6_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void Update()
+        {
+            try
+            {
+                String query = "  Update [osuSimulation].[maps].[PlayMap] set [name] = '" + MName.Text + "' ,[user_id] = null" + userID.Text + ", [BPM] = " + bpm.Text + ", [object_count] = " + objects.Text + ", [SR] = " + sr.Text + ", [UpdateDate] = cast('" +  DateTime.UtcNow + "' as datetime) " + "where [id] = " + ID.Text + ";";
+
+                SqlCommand UpdateCommand = new SqlCommand(query, con);
+                con.Open();
+                UpdateCommand.ExecuteNonQuery();
+                Refresh();
+           
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+
+            }
+            con.Close();
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Update();
+        }
+
+        public void Delete()
+        {
+
+            try
+            {
+                String query = "Delete from [osuSimulation].[maps].[PlayMap] where [id] = " + ID.Text;
+
+                SqlCommand DeleteCommand = new SqlCommand(query, con);
+                con.Open();
+                DeleteCommand.ExecuteNonQuery();
+                MessageBox.Show("Delete Success");
+                Refresh();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            con.Close();
+          
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Delete();
         }
     }
 }
