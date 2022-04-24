@@ -17,9 +17,19 @@ namespace osuForm
         List<Map> Maps;
         String RowName;
         bool SRcheck;
+        string username;
+        Map map2;
+
         public Form4()
         {
             InitializeComponent();
+        }
+
+        public Form4(string _username)
+        {
+            username = _username;
+            InitializeComponent();
+            userID.Text = username;
         }
 
         private void Form4_Load(object sender, EventArgs e)
@@ -31,7 +41,7 @@ namespace osuForm
                 string cn = @"Server=LAPTOP-79NLGEPR;Database=osuSimulation;UID=LAPTOP-79NLGEPR\User;Password=;Integrated Security=true;";
                 con = new SqlConnection(cn);
                 Refresh();
-            
+               
 
 
             }
@@ -119,7 +129,7 @@ namespace osuForm
                  map.createdDate = createdDate;
                  map.UpdatedDate = UpdatedDate;*/
 
-                Map map2 = new Map
+                map2 = new Map
                 {
                     id = int.Parse(id),
                     name = name,
@@ -226,6 +236,62 @@ namespace osuForm
         private void button3_Click(object sender, EventArgs e)
         {
             Delete();
+        }
+
+        public void Create()
+        {
+
+            try
+            {
+
+
+                string name = MName.Text;
+                string BPM = bpm.Text;
+                string SR = sr.Text;
+                string ObjectCount = objects.Text;
+                DateTime CreateDate = DateTime.UtcNow;
+                DateTime UpdateDate = DateTime.UtcNow;
+
+
+
+
+                String insert = "insert into osuSimulation.maps.PlayMap (name, BPM, object_count, SR, createDate, UpdateDate, IsActive , IsDeleted)";
+                string values = "values('" + name + "', " + BPM + ", " + ObjectCount + ", " + SR + ", '" + CreateDate.ToString("yyyy-MM-dd HH:mm:ss.fff") + "', '" + UpdateDate.ToString("yyyy-MM-dd HH:mm:ss.fff") + "', " + 1 + ", " + 0 + ");";
+                String Query = insert + values;
+                con.Open();
+                SqlCommand command = new SqlCommand(Query, con);
+                command.ExecuteNonQuery();
+                MessageBox.Show("Insert Success");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            con.Close();
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            Create();
+            Refresh();
+        }
+        
+        public void setUserData(string _username)
+        {
+            username = _username;
+
+            userID.Text = username;
+           
+               
+        }
+
+        private void DataGridViewDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            Form5 form5 = new Form5(map2.id,map2.name, map2.BPM, map2.SR);
+            form5.ShowDialog();
+            
         }
     }
 }

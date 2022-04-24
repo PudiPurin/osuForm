@@ -66,7 +66,13 @@ namespace osuForm
                 }
                 if(Checklogin == true)
                 {
+
                     MessageBox.Show("Login Success");
+                    this.Hide();
+                    Form4 form4 = new Form4(username);
+                    //form4.setUserData(username);
+                    form4.ShowDialog();
+
                 }
                 else
                 {
