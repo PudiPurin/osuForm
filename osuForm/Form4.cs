@@ -13,6 +13,14 @@ namespace osuForm
 {
     public partial class Form4 : Form
     {
+        string selectedsort;
+
+        Boolean isName;
+        Boolean isBpm;
+        Boolean isSR;
+        Boolean isObject;
+        Boolean isUpdate;
+        List<Map> AllMaps;
         SqlConnection con;
         List<Map> Maps;
         String RowName;
@@ -35,13 +43,14 @@ namespace osuForm
         private void Form4_Load(object sender, EventArgs e)
         {
             Maps = new List<Map>();
+            AllMaps = new List<Map>();
             try
             {
                 // string cn = "server = LAPTOP-79NLGEPR; database = osuSimulation; UID = LAPTOP-79NLGEPR\\User; password = ;";
                 string cn = @"Server=LAPTOP-79NLGEPR;Database=osuSimulation;UID=LAPTOP-79NLGEPR\User;Password=;Integrated Security=true;";
                 con = new SqlConnection(cn);
                 Refresh();
-               
+
 
 
             }
@@ -49,50 +58,68 @@ namespace osuForm
             {
                 MessageBox.Show(ex.Message);
             }
-          
 
-         
+
+
 
         }
 
         public void Refresh()
         {
-            con.Open();
-            String query = "  select [name], [BPM], [SR], [UpdateDate] from [osuSimulation].[maps].[PlayMap]";
-            dataGridView1.Rows.Clear();
-            dataGridView1.ColumnCount = 4;
-            dataGridView1.Columns[0].Name = "Map Name";
-            dataGridView1.Columns[1].Name = "BPM";
-            dataGridView1.Columns[2].Name = "SR";
-            dataGridView1.Columns[3].Name = "Last Updated";
-            SqlCommand command = new SqlCommand(query, con);
-            SqlDataReader reader;
-            reader = command.ExecuteReader();
-
-            while (reader.Read())
+            try
             {
-                String name = reader["[name]"].ToString();
-                String BPM = reader["[BPM"].ToString();
-                String SR = reader["[SR]"].ToString();
-                String updateddate = reader["[UpdateDate]"].ToString();
-                    
-                String[] rows = new string[]
+                AllMaps = new List<Map>();
+                con.Open();
+                String query = "  select [name], [BPM], [SR], [object_count], [UpdateDate] from [osuSimulation].[maps].[PlayMap]";
+                dataGridView1.Rows.Clear();
+                dataGridView1.ColumnCount = 5;
+                dataGridView1.Columns[0].Name = "Map Name";
+                dataGridView1.Columns[1].Name = "BPM";
+                dataGridView1.Columns[2].Name = "SR";
+                dataGridView1.Columns[3].Name = "Object Count";
+                dataGridView1.Columns[4].Name = "Last Updated";
+                SqlCommand command = new SqlCommand(query, con);
+                SqlDataReader reader;
+                reader = command.ExecuteReader();
+
+                while (reader.Read())
                 {
-                        name, BPM, SR, updateddate
-                };
-                dataGridView1.Rows.Add(rows);
+                    Map map = new Map();
+                    String name = reader["[name]"].ToString();
+                    String BPM = reader["[BPM]"].ToString();
+                    String SR = reader["[SR]"].ToString();
+                    String objects = reader["object_count]"].ToString();
+                    String updateddate = reader["[UpdateDate]"].ToString();
+
+                    map.name = name;
+                    map.BPM = int.Parse(BPM);
+                    map.SR = float.Parse(SR);
+                    map.UpdatedDate = updateddate;
+                    map.object_count = int.Parse(objects);
+
+                    String[] rows = new string[]
+                    {
+                        name, BPM, SR, objects, updateddate
+                    };
+                    dataGridView1.Rows.Add(rows);
+                    AllMaps.Add(map);
+                }
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
+    
             con.Close();
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-           
+
         }
 
         private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            
+
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
@@ -142,7 +169,7 @@ namespace osuForm
                 {
                     map2.userID = int.Parse(user_id);
                 }*/
-                    
+
                     BPM = int.Parse(BPM),
                     object_count = int.Parse(object_count),
                     SR = float.Parse(SR),
@@ -151,10 +178,10 @@ namespace osuForm
                     createdDate = createdDate,
                     UpdatedDate = UpdatedDate,
                 };
-             
+
 
                 Maps.Add(map2);
-              
+
                 ID.Text = map2.id.ToString();
                 MName.Text = map2.name;
                 userID.Text = map2.userID.ToString();
@@ -190,15 +217,15 @@ namespace osuForm
         {
             try
             {
-                String query = "  Update [osuSimulation].[maps].[PlayMap] set [name] = '" + MName.Text + "' ,[user_id] = null" + userID.Text + ", [BPM] = " + bpm.Text + ", [object_count] = " + objects.Text + ", [SR] = " + sr.Text + ", [UpdateDate] = cast('" +  DateTime.UtcNow + "' as datetime) " + "where [id] = " + ID.Text + ";";
+                String query = "  Update [osuSimulation].[maps].[PlayMap] set [name] = '" + MName.Text + "' ,[user_id] = null" + userID.Text + ", [BPM] = " + bpm.Text + ", [object_count] = " + objects.Text + ", [SR] = " + sr.Text + ", [UpdateDate] = cast('" + DateTime.UtcNow + "' as datetime) " + "where [id] = " + ID.Text + ";";
 
                 SqlCommand UpdateCommand = new SqlCommand(query, con);
                 con.Open();
                 UpdateCommand.ExecuteNonQuery();
                 Refresh();
-           
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
 
@@ -225,12 +252,12 @@ namespace osuForm
                 MessageBox.Show("Delete Success");
                 Refresh();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
             con.Close();
-          
+
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -277,21 +304,195 @@ namespace osuForm
             Create();
             Refresh();
         }
-        
+
         public void setUserData(string _username)
         {
             username = _username;
 
             userID.Text = username;
-           
-               
+
+
         }
 
         private void DataGridViewDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            Form5 form5 = new Form5(map2.id,map2.name, map2.BPM, map2.SR);
+            Form5 form5 = new Form5(map2.id, map2.name, map2.BPM, map2.SR);
             form5.ShowDialog();
-            
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            AllMaps.Where(x => x.name.Contains(textBox1.Text) || x.BPM.ToString().Contains(textBox1.Text) || x.SR.ToString().Contains(textBox1.Text) || x.SR.ToString().Contains(textBox1.Text)).All(x =>
+            {
+
+                string[] rows = new string[]
+                     {
+                           x.name, x.BPM.ToString(), x.SR.ToString(), x.object_count.ToString(), x.UpdatedDate.ToString()
+                     };
+                dataGridView1.Rows.Add(rows);
+
+
+                return true;
+            });
+             
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<Map> maps = new List<Map>();
+            if (comboBox1.SelectedIndex.Equals(0))
+            {
+                dataGridView1.Rows.Clear();
+                if (isName)
+                {
+                    maps = AllMaps.OrderByDescending(x => x.name).ToList();
+                }
+                else if (isBpm)
+                {
+                    maps = AllMaps.OrderByDescending(x => x.BPM).ToList();
+                }
+                else if (isSR)
+                {
+                    maps = AllMaps.OrderByDescending(x => x.SR).ToList();
+                }
+                else if (isObject)
+                {
+                    maps = AllMaps.OrderByDescending(x => x.object_count).ToList();
+                }
+                else if (isUpdate)
+                {
+                    maps = AllMaps.OrderByDescending(x => x.UpdatedDate).ToList();
+
+                }
+
+
+
+                /*    foreach (var item in maps)
+                    {
+                        string[] rows = new string[]
+                        {
+                           item.name, item.BPM.ToString(), item.SR.ToString(), item.object_count.ToString(), item.UpdatedDate.ToString()
+                        };
+
+                        dataGridView1.Rows.Add(rows);
+                    } */
+
+                /*  maps.ForEach(item => 
+                   {
+                       string[] rows = new string[]
+                       {
+                           item.name, item.BPM.ToString(), item.SR.ToString(), item.object_count.ToString(), item.UpdatedDate.ToString()
+                       };
+                       dataGridView1.Rows.Add(rows);
+
+                    }); */
+
+                maps.All(item =>
+                {
+                    string[] rows = new string[]
+                     {
+                           item.name, item.BPM.ToString(), item.SR.ToString(), item.object_count.ToString(), item.UpdatedDate.ToString()
+                     };
+                    dataGridView1.Rows.Add(rows);
+
+                    return true;
+                });
+                
+
+
+
+            } else if (comboBox1.SelectedIndex.Equals(1))
+                
+                dataGridView1.Rows.Clear();
+
+            if (isName)
+            {
+                maps = AllMaps.OrderBy(x => x.name).ToList();
+            }
+            else if (isBpm)
+            {
+                maps = AllMaps.OrderBy(x => x.BPM).ToList();
+            }
+            else if (isSR)
+            {
+                maps = AllMaps.OrderBy(x => x.SR).ToList();
+            }
+            else if (isObject)
+            {
+                maps = AllMaps.OrderBy(x => x.object_count).ToList();
+            }
+            else if (isUpdate)
+            {
+                maps = AllMaps.OrderBy(x => x.UpdatedDate).ToList();
+
+            }
+
+
+
+            foreach (var item in maps)
+            {
+                string[] rows = new string[]
+                {
+                       item.name, item.BPM.ToString(), item.SR.ToString(), item.object_count.ToString(), item.UpdatedDate.ToString()
+                };
+
+                dataGridView1.Rows.Add(rows);
+            }
+            {
+                
+            }
+        }
+
+
+
+            private void radioButton1_CheckedChanged(object sender, EventArgs e)
+            {
+            isName = true;
+            isBpm = false;
+            isSR = false;
+            isObject = false;
+            isUpdate = false;
+
+            }
+
+            private void radioButton2_CheckedChanged(object sender, EventArgs e)
+            {
+            isName = false;
+            isBpm = true;
+            isSR = false;
+            isObject = false;
+            isUpdate = false;
+        }
+
+            private void radioButton3_CheckedChanged(object sender, EventArgs e)
+            {
+            isName = false;
+            isBpm = false;
+            isSR = true;
+            isObject = false;
+            isUpdate = false;
+        }
+
+            private void radioButton4_CheckedChanged(object sender, EventArgs e)
+            {
+            isName = false;
+            isBpm = false;
+            isSR = false;
+            isObject = true;
+            isUpdate = false;
+        }
+
+            private void radioButton5_CheckedChanged(object sender, EventArgs e)
+            {
+            isName = false;
+            isBpm = false;
+            isSR = false;
+            isObject = false;
+            isUpdate = true;
+        }
         }
     }
-}
+
+

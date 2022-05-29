@@ -193,7 +193,7 @@ namespace osuForm
 
         private void dataGridView1_RowHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            MessageBox.Show("working");
+                
            int i = dataGridView1.SelectedRows[0].Index;
             Selectedid = DetailLists.Where(x => x.Key == i).FirstOrDefault().Value;
 
