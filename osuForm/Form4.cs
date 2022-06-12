@@ -14,7 +14,7 @@ namespace osuForm
     public partial class Form4 : Form
     {
         string selectedsort;
-
+        Boolean isFirstLoad;
         Boolean isName;
         Boolean isBpm;
         Boolean isSR;
@@ -42,6 +42,7 @@ namespace osuForm
 
         private void Form4_Load(object sender, EventArgs e)
         {
+            isFirstLoad = true;
             Maps = new List<Map>();
             AllMaps = new List<Map>();
             try
@@ -51,7 +52,13 @@ namespace osuForm
                 con = new SqlConnection(cn);
                 Refresh();
 
+                checkBox1.Checked = true;
+                checkBox2.Checked = true;
+                checkBox3.Checked = true;
+                checkBox4.Checked = true;
+                checkBox5.Checked = true;
 
+                
 
             }
             catch (Exception ex)
@@ -61,7 +68,7 @@ namespace osuForm
 
 
 
-
+            isFirstLoad = false;
         }
 
         public void Refresh()
@@ -104,11 +111,12 @@ namespace osuForm
                     dataGridView1.Rows.Add(rows);
                     AllMaps.Add(map);
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-    
+
             con.Close();
         }
 
@@ -336,7 +344,7 @@ namespace osuForm
 
                 return true;
             });
-             
+
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -399,12 +407,13 @@ namespace osuForm
 
                     return true;
                 });
-                
 
 
 
-            } else if (comboBox1.SelectedIndex.Equals(1))
-                
+
+            }
+            else if (comboBox1.SelectedIndex.Equals(1))
+
                 dataGridView1.Rows.Clear();
 
             if (isName)
@@ -441,24 +450,24 @@ namespace osuForm
                 dataGridView1.Rows.Add(rows);
             }
             {
-                
+
             }
         }
 
 
 
-            private void radioButton1_CheckedChanged(object sender, EventArgs e)
-            {
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
             isName = true;
             isBpm = false;
             isSR = false;
             isObject = false;
             isUpdate = false;
 
-            }
+        }
 
-            private void radioButton2_CheckedChanged(object sender, EventArgs e)
-            {
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
             isName = false;
             isBpm = true;
             isSR = false;
@@ -466,8 +475,8 @@ namespace osuForm
             isUpdate = false;
         }
 
-            private void radioButton3_CheckedChanged(object sender, EventArgs e)
-            {
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
             isName = false;
             isBpm = false;
             isSR = true;
@@ -475,8 +484,8 @@ namespace osuForm
             isUpdate = false;
         }
 
-            private void radioButton4_CheckedChanged(object sender, EventArgs e)
-            {
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
             isName = false;
             isBpm = false;
             isSR = false;
@@ -484,14 +493,153 @@ namespace osuForm
             isUpdate = false;
         }
 
-            private void radioButton5_CheckedChanged(object sender, EventArgs e)
-            {
+        private void radioButton5_CheckedChanged(object sender, EventArgs e)
+        {
             isName = false;
             isBpm = false;
             isSR = false;
             isObject = false;
             isUpdate = true;
         }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+           if(isFirstLoad == false)
+            {
+                localDataFieldManager();
+            }
+
+
+
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (isFirstLoad == false)
+            {
+                localDataFieldManager();
+            }
+
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isFirstLoad == false)
+            {
+                localDataFieldManager();
+            }
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isFirstLoad == false)
+            {
+                localDataFieldManager();
+            }
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isFirstLoad == false)
+            {
+                localDataFieldManager();
+            }
+        }
+
+        public void localDataFieldManager()
+        {
+            dataGridView1.Rows.Clear();
+
+  
+
+            foreach (var item in AllMaps)
+            {
+
+                    
+                string[] rows;
+
+                List<String> Rows = new List<String>();
+                if (checkBox1.Checked)
+                {
+                    dataGridView1.Columns[0].Visible = true;
+                    Rows.Add(item.name.ToString());
+                } 
+                else
+                {
+                    dataGridView1.Columns[0].Visible = false;
+                    Rows.Add(item.name.ToString());
+                }
+                if (checkBox2.Checked)
+                {
+                    dataGridView1.Columns[1].Visible = true;
+                    Rows.Add(item.BPM.ToString());
+                } 
+                else
+                {
+                    dataGridView1.Columns[1].Visible = false;
+                    Rows.Add(item.BPM.ToString());
+                }
+                if(checkBox3.Checked)
+                {
+                    dataGridView1.Columns[2].Visible = true;
+                    Rows.Add(item.SR.ToString());
+                }
+                else
+                {
+                    dataGridView1.Columns[2].Visible = false;
+                    Rows.Add(item.SR.ToString());
+                }
+                if(checkBox4.Checked)
+                {
+                    dataGridView1.Columns[3].Visible = true;
+                    Rows.Add(item.object_count.ToString());
+                }  
+                else
+                {
+                    dataGridView1.Columns[3].Visible = false;
+                    Rows.Add(item.object_count.ToString());
+                }
+                if (checkBox5.Checked)
+                {
+                    dataGridView1.Columns[4].Visible = true;
+
+                    Rows.Add(item.UpdatedDate.ToString());
+                }
+                else
+                {
+                    dataGridView1.Columns[4].Visible = false;
+                    Rows.Add(item.UpdatedDate.ToString());
+                }
+
+
+
+                /*   if (checkBox1.Checked && checkBox2.Checked && checkBox3.Checked && checkBox4.Checked && checkBox5.Checked)
+                   {
+                       rows = new string[]
+                       {
+                          item.name, item.BPM.ToString(), item.SR.ToString(), item.object_count.ToString(), item.UpdatedDate.ToString()
+                       };
+
+                   }
+                   else if (!checkBox1.Checked && checkBox2.Checked && checkBox3.Checked && checkBox4.Checked && checkBox5.Checked)
+                   {
+                       rows = new string[]
+                     {
+                         item.BPM.ToString(), item.SR.ToString(), item.object_count.ToString(), item.UpdatedDate.ToString()
+                     };
+                   }
+                   else
+                   {
+                       rows = new string[]
+                       {
+
+                       };
+                   } */
+                rows = Rows.ToArray();
+                dataGridView1.Rows.Add(rows.ToArray());
+}
+            } 
         }
     }
 
